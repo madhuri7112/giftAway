@@ -9,6 +9,14 @@ from models import *
 from Managers import userManager  
 
 
+from django.http import HttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.renderers import JSONRenderer
+from rest_framework.parsers import JSONParser
+
+
+
+
 def index(request):
     #return HttpResponse("Hello, world. You're at the polls index.")
 
@@ -34,7 +42,12 @@ def user_details_api(request):
 
     return JsonResponse(user_details);
 
+@csrf_exempt
 def add_user_api(request):
+    
+    print request.POST
 
-    user = userManager.add_user()
-    return JsonResponse(user);
+    user = userManager.add_user(request.POST)
+    return JsonResponse(user);	
+
+
