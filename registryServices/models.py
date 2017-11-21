@@ -19,12 +19,13 @@ class Item(models.Model):
 
 class Registry(models.Model):
 	owner_id = models.ForeignKey(User, on_delete=models.CASCADE)
+	name = models.CharField(max_length=200, default="NewRegistry")
 	public = models.BooleanField()
 
 class RegistryItem(models.Model):
 	registry_id = models.ForeignKey(Registry, on_delete=models.CASCADE)
 	item_id = models.ForeignKey(Item, on_delete=models.CASCADE)
-	assigned_to = models.ForeignKey(User, on_delete=models.CASCADE)
+	assigned_to = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
 class RegistryAccess():
 	registry_id = models.ForeignKey(Registry, on_delete=models.CASCADE)
