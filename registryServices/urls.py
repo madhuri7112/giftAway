@@ -22,6 +22,8 @@ urlpatterns = [
     url(r'^getusers', views.user_list_api, name='user_list'),
     url(r'^getuser', views.user_details_api, name='user_list'),
     url(r'^adduser', views.add_user_api, name='add_user'),
+    url(r'^createtoken', views.createtoken_api, name='create_token'),
+    url(r'^userfromtoken', views.get_user_from_token, name='user_from_token'),
     # url(r'^getregistries', views.registry_list, name='registry_list'),    
     # url(r'^addregistry', views.add_registry, name='add_user'),
     # url(r'^admin/', admin.site.urls),

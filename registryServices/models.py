@@ -2,13 +2,13 @@
 from __future__ import unicode_literals
 
 from django.db import models
-
+from django.contrib.auth.models import User
 # Create your models here.
-class User(models.Model):
-    name = models.CharField(max_length=200)
-    email_id = models.CharField(max_length=200)
-    password = models.CharField(max_length=200)
-    role = models.CharField(max_length=200)
+# class User(models.Model):
+#     name = models.CharField(max_length=200)
+#     email_id = models.CharField(max_length=200)
+#     password = models.CharField(max_length=200)
+#     role = models.CharField(max_length=200)
 
 class Item(models.Model):
 	item_code = models.IntegerField();
