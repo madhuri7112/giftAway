@@ -27,7 +27,7 @@ class RegistryItem(models.Model):
 	item_id = models.ForeignKey(Item, on_delete=models.CASCADE)
 	assigned_to = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
-class RegistryAccess():
+class RegistryAccess(models.Model):
 	registry_id = models.ForeignKey(Registry, on_delete=models.CASCADE)
 	user_id = models.ForeignKey(User, on_delete=models.CASCADE)
 

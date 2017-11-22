@@ -116,9 +116,31 @@ def get_registry_api(request):
 
 def registry_list_api(request):
 
-    user_id = request.POST['user_id']
+    user_id = request.GET['user_id']
+    result = registryManager.get_registries(user_id)
 
-    return JsonResponse({"registries" : registries});
+    return JsonResponse(result);
 
+@csrf_exempt
+def give_access_registry_api(request):
+
+	user_id = request.POST['user_id']
+	access_to_user_id = request.POST['access_to_user_id']
+	registry_id = request.POST['registry_id']
+
+	result = registryManager.give_access_registry(user_id, registry_id, access_to_user_id)
+
+	return JsonResponse(result)
+
+@csrf_exempt
+def deny_access_registry_api(request):
+
+	user_id = request.POST['user_id']
+	deny_to_user_id = request.POST['deny_to_user_id']
+	registry_id = request.POST['registry_id']
+
+	result = registryManager.deny_access_registry(user_id, registry_id, deny_to_user_id)
+
+	return JsonResponse(result)
 
 

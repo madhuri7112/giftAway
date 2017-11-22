@@ -27,8 +27,11 @@ urlpatterns = [
 
     url(r'^createregistry', views.create_registry_api, name='create_registry_api'),
     url(r'^getregistry', views.get_registry_api, name='get_registry_api'),
+    url(r'^registries', views.registry_list_api, name='get_registry_api'),
     url(r'^additemtoregistry', views.add_item_registry_api, name='add_item_registry_api'),
     url(r'^removeitemfromregistry', views.remove_item_registry_api, name='remove_item_registry_api'),
+    url(r'^giveaccess', views.give_access_registry_api, name='add_item_registry_api'),
+    url(r'^denyaccess', views.deny_access_registry_api, name='add_item_registry_api'),
 
     url(r'^additemtoinventory', views.add_item_inventory_api, name='add_item_inventory_api'),
     # url(r'^getregistries', views.registry_list, name='registry_list'),    
