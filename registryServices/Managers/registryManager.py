@@ -13,8 +13,14 @@ def get_registries(user_id):
     registries = models.Registry.objects.filter(owner_id = user_id)
     own_registries = []
     for reg in registries:
-
-        own_registries.append({"id": reg.id, "name": reg.name, "public": reg.public})
+        reg_detail = get_registry(user_id, reg.id)
+        r = {
+            "id": reg.id, 
+            # "name": reg.name, 
+            # "public": reg.public,
+            'details' : reg_detail
+        }
+        own_registries.append(r)
 
     registry_accesses = models.RegistryAccess.objects.filter(user_id = user_id)
     other_registries = []
@@ -55,6 +61,7 @@ def get_registry(user_id, registry_id):
             })
 
     result['items'] = items
+    result['num_items'] = len(items)
 
     return result
 

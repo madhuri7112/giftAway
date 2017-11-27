@@ -30,8 +30,9 @@ def create_token(username, password):
     user = authenticate(username=username, password=password)
     token_object = Token.objects.get_or_create(user=user)
     token = token_object[0].key
+    result = {"user_id": user.id, "token": token}
 
-    return token
+    return result
 
 def get_user_from_token(token):
 
