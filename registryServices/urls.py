@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^getuser', views.user_details_api, name='user_list'),
     url(r'^registeruser', views.register_user_api, name='register_user'),
     url(r'^createtoken', views.createtoken_api, name='create_token'),
+    url(r'^logout', views.logout_api, name='logout'),
     url(r'^userfromtoken', views.get_user_from_token_api, name='user_from_token'),
 
     url(r'^createregistry', views.create_registry_api, name='create_registry_api'),

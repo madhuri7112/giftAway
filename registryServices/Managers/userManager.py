@@ -2,12 +2,14 @@ from .. import models
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
-
+from constants import * 
 # def add_user():
 #     new_user = models.User(name="name", email_id="email_id", password="password", role="role")
 #     new_user.save()
 
 #     return  {"user_id": new_user.id}
+
+
 
 
 def get_all_users():
@@ -20,14 +22,34 @@ def get_all_users():
     return result_users
 
 def get_user(id):
-      
-    user = User.objects.get(id=id)
+          
+    try:
+        user = User.objects.get(id=id)
+
+    except:
+
+        r =  {KEY_STATUS: STATUS_FAILED, 
+        KEY_MESSAGE: NOT_FOUND,
+        KEY_CODE: NOT_FOUND_CODE
+         }
+
+        return r
 
     return {"id": user.id, "username": user.username, "email": user.email, "password": user.password}
 
 def create_token(username, password):
 
     user = authenticate(username=username, password=password)
+
+    if not user:
+        result = {
+        KEY_CODE: FORBIDDEN_CODE, 
+        KEY_STATUS: STATUS_FAILED,
+        KEY_MESSAGE: AUTH_ERROR
+        }
+
+        return result
+
     token_object = Token.objects.get_or_create(user=user)
     token = token_object[0].key
     result = {"user_id": user.id, "token": token}
@@ -36,10 +58,23 @@ def create_token(username, password):
 
 def get_user_from_token(token):
 
-    token_object = Token.objects.get(key=token)
+    try:
+        token_object = Token.objects.get(key=token)
+ 
+    except:
+        result = {
+        KEY_CODE: NOT_FOUND_CODE, 
+        KEY_STATUS: STATUS_FAILED,
+        KEY_MESSAGE: NOT_FOUND
+        }
+
+        return result
+
     user_id = token_object.user_id
 
-    return user_id
+    user_details = get_user(user_id)
+
+    return user_details
 
 def delete_token(token):
 
@@ -51,10 +86,41 @@ def delete_token(token):
 
     return user_id
 
+def logout(user_id):
+
+    try:
+        user = User.objects.get(id=user_id)   
+    except:
+        result = {
+        KEY_CODE: NOT_FOUND_CODE, 
+        KEY_STATUS: STATUS_FAILED,
+        KEY_MESSAGE: NOT_FOUND
+        }
+
+        return result
+
+    try:
+       user.auth_token.delete()
+    except:
+       a = 10
+    finally:
+        return {KEY_STATUS: STATUS_SUCCESS}
+        #return {"user_id": user_id}
+
+    
+    
+
 def register_user(username, email, password):
 
-      user = User.objects.create_user(username, email, password)
+    try:
+        user = User.objects.create_user(username, email, password)
+    except:
+        result = { 
+           KEY_STATUS: STATUS_FAILED,
+           KEY_MESSAGE: USERACCOUNT_EXISTS
+        }
+        return result
 
-      return user.username
+    return {KEY_STATUS: STATUS_SUCCESS, 'user_id': user.id}
 
 

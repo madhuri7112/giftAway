@@ -5,10 +5,10 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import JsonResponse
 
-from models import *
-from Managers import userManager
-from Managers import registryManager
-from Managers import itemManager
+from .models import *
+from .Managers import userManager
+from .Managers import registryManager
+from .Managers import itemManager
 
 
 from django.http import HttpResponse, JsonResponse
@@ -49,9 +49,9 @@ def get_user_from_token_api(request):
 
     parameters = json.loads(request.body)
     token = parameters['token']
-    user_id = userManager.get_user_from_token(token)
+    user_details = userManager.get_user_from_token(token)
      
-    return JsonResponse({"user_id" : user_id})
+    return JsonResponse(user_details)
 
 @csrf_exempt
 def delete_token_api(request):
@@ -63,6 +63,15 @@ def delete_token_api(request):
     return JsonResponse({"user_id": user_id, "logout": True})
 
 @csrf_exempt
+def logout_api(request):
+
+     parameters = json.loads(request.body)
+     user_id = parameters['user_id']
+     result = userManager.logout(user_id)
+
+     return JsonResponse(result)
+
+@csrf_exempt
 def register_user_api(request):   
     #print parameters
 
@@ -71,9 +80,9 @@ def register_user_api(request):
     email = parameters['email']
     password = parameters['password']
 
-    username = userManager.register_user(username, email, password)   
+    result = userManager.register_user(username, email, password)   
      
-    return JsonResponse({"user": username});
+    return JsonResponse(result);
 
 @csrf_exempt
 def add_item_inventory_api(request):
