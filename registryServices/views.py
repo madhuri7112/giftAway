@@ -47,8 +47,8 @@ def createtoken_api(request):
 @csrf_exempt
 def get_user_from_token_api(request):
 
-    parameters = json.loads(request.body)
-    token = parameters['token']
+    
+    token = request.GET['token']
     user_details = userManager.get_user_from_token(token)
      
     return JsonResponse(user_details)
@@ -135,6 +135,7 @@ def get_registry_api(request):
     result = registryManager.get_registry(user_id, registry_id)
 
     return JsonResponse(result)
+
 
 def registry_list_api(request):
     print request
