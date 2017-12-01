@@ -107,7 +107,19 @@ def logout(user_id):
         return {KEY_STATUS: STATUS_SUCCESS}
         #return {"user_id": user_id}
 
-    
+
+def change_password(user_id, password):
+
+    try:
+
+        u = User.objects.get(id=user_id)
+        u.set_password(password)
+        u.save()
+
+    except:
+        return {KEY_STATUS: STATUS_FAILED}
+
+    return {KEY_STATUS: STATUS_SUCCESS}
     
 
 def register_user(username, email, password):

@@ -13,7 +13,7 @@ def get_registries(user_id):
     registries = models.Registry.objects.filter(owner_id = user_id)
     own_registries = []
     for reg in registries:
-        reg_detail = get_registry(user_id, reg.id)
+        reg_detail = get_registry(reg.id)
         r = {
             "id": reg.id, 
             # "name": reg.name, 
@@ -25,11 +25,24 @@ def get_registries(user_id):
     registry_accesses = models.RegistryAccess.objects.filter(user_id = user_id)
     other_registries = []
     for ra in registry_accesses:
+        assigned = False
+        self_assigned = False
+
+        if (ra.user_id != None):
+             if (ra.user_id == user_id):
+                self_assigned = True
+             else:
+                self_assigned = False
+                     
+        reg_detail = get_registry(ra.registry_id.id)
     	r = {
     	   "id" : ra.registry_id.id,
-    	   "name" : ra.registry_id.name,
-    	   "owner_id" : ra.registry_id.owner_id.id,
-    	   "owner_name" : ra.registry_id.owner_id.username    	   
+           "details" : reg_detail,
+           "assigned" : assigned,
+           "self_assigned" : self_assigned,
+    	   # "name" : ra.registry_id.name,
+    	    "owner_id" : ra.registry_id.owner_id.id,
+    	    "owner_name" : ra.registry_id.owner_id.username    	   
     	}
     	other_registries.append(r)
 
@@ -37,7 +50,7 @@ def get_registries(user_id):
 
     return result
 
-def get_registry(user_id, registry_id):
+def get_registry(registry_id):
 
     registry = models.Registry.objects.get(id=registry_id)
     registry_items = models.RegistryItem.objects.filter(registry_id=registry_id)

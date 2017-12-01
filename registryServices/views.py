@@ -85,6 +85,17 @@ def register_user_api(request):
     return JsonResponse(result);
 
 @csrf_exempt
+def change_password_api(request):
+
+    parameters = json.loads(request.body)
+    password = parameters['password']
+    user_id = parameters['user_id']
+
+    result = userManager.change_password(user_id, password)
+
+    return JsonResponse(result)
+
+@csrf_exempt
 def add_item_inventory_api(request):
 
     parameters = json.loads(request.body)
@@ -132,7 +143,7 @@ def get_registry_api(request):
 
     user_id = request.GET['user_id']
     registry_id = request.GET['registry_id']
-    result = registryManager.get_registry(user_id, registry_id)
+    result = registryManager.get_registry(registry_id)
 
     return JsonResponse(result)
 
