@@ -16,6 +16,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 import json
+from django.core.cache import cache
 
 def index(request):
     a = {"abc":"24"};
@@ -104,6 +105,17 @@ def add_item_inventory_api(request):
     return JsonResponse(result)
 
 @csrf_exempt
+def remove_item_inventory_api(request):
+
+    parameters = json.loads(request.body)
+    user_id = parameters['user_id']
+    item_id = parameters['item_id']
+
+    result = itemManager.remove_item(user_id, item_id)
+
+    return JsonResponse(result)
+
+@csrf_exempt
 def add_item_registry_api(request):
 
     parameters = json.loads(request.body)
@@ -134,8 +146,9 @@ def create_registry_api(request):
     user_id = parameters['user_id']
     public = parameters['public']
     name = parameters['name']
+    allowed_users = parameters['allowed_users']
 
-    result = registryManager.create_registry(user_id, name, public)
+    result = registryManager.create_registry(user_id, name, public, allowed_users)
 
     return JsonResponse(result)
 
@@ -179,4 +192,38 @@ def deny_access_registry_api(request):
 
     return JsonResponse(result)
 
+@csrf_exempt
+def assign_item_api(request):
+
+    parameters = json.loads(request.body)
+    user_id = parameters['user_id']
+    registry_item_id = parameters['registry_item_id']
+
+    result = registryManager.assign_item(user_id, registry_item_id)
+
+    return JsonResponse(result)
+
+@csrf_exempt
+def unassign_item_api(request):
+
+    parameters = json.loads(request.body)
+    user_id = parameters['user_id']
+    registry_item_id = parameters['registry_item_id']
+
+    result = registryManager.unassign_item(user_id, registry_item_id)
+
+    return JsonResponse(result)
+
+def get_items(request):
+    
+    result = itemManager.get_all_items()
+
+    return JsonResponse(result)
+
+
+def get_users_with_access_register(request):
+
+    registry_id = request.GET['registry_id']
+
+    
 

@@ -21,11 +21,32 @@ def add_item(params):
 
     return  {"id": new_item.id}
 
-def remove_item(item_id):
+def remove_item(user_id, item_id):
 
     models.Item.objects.get(id=item_id).delete()
 
     return {"status": "SUCCESS"}
+
+def get_all_items():
+    
+    items = models.Item.objects.all()
+
+    all_items = []
+    for item in items :
+        r = {
+          "id" : item.id,
+          "item_code": item.item_code,
+          "price": item.price,
+          "category": item.category,
+          "colour": item.colour,
+          "item_name": item.item_name
+        }
+        all_items.append(r)
+
+    res = {"items": all_items}
+
+    return res
+
 
 def search():
 

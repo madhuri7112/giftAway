@@ -17,7 +17,7 @@ def get_all_users():
     users = User.objects.all()
     result_users = []
     for user in users: 
-        result_users.append({"username": user.username, "email": user.email, "password": user.password})
+        result_users.append({"id":user.id, "username": user.username, "email": user.email, "password": user.password})
 
     return result_users
 

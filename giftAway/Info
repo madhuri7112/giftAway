@@ -19,3 +19,20 @@ CORS
 
 sudo pip install django-cors-headers.   ---   https://github.com/crs4/ome_seadragon/wiki/Enable-Django-CORS-(Cross-Origin-Resource-Sharing)-Headers-configuration
  
+
+for x in registry_item.__dict__.keys():
+            print x
+            print registry_item[x]
+
+
+
+
+Remove item from registry
+
+Get users with access
+Give access 
+remove access
+
+
+Add item frominventory
+remove item from inventory

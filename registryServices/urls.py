@@ -36,6 +36,10 @@ urlpatterns = [
     url(r'^denyaccess', views.deny_access_registry_api, name='add_item_registry_api'),
 
     url(r'^additemtoinventory', views.add_item_inventory_api, name='add_item_inventory_api'),
+
+    url(r'^assignitem', views.assign_item_api, name='add_item_registry_api'),
+    url(r'^unassignitem', views.unassign_item_api, name='add_item_registry_api'),
+    url(r'^items', views.get_items, name='get_items')
     # url(r'^getregistries', views.registry_list, name='registry_list'),    
     # url(r'^addregistry', views.add_registry, name='add_user'),
     # url(r'^admin/', admin.site.urls),

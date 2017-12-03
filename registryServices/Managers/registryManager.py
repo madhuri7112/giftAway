@@ -1,10 +1,20 @@
 from .. import models
 from django.contrib.auth.models import User
+from userManager import * 
 
-def create_registry(user_id, name, public):
+def create_registry(user_id, name, public, allowed_users):
 
     new_registry = models.Registry(owner_id = User.objects.get(id=user_id), name= name, public = public)
     new_registry.save()
+
+    if len(allowed_users) == 0:
+        users = get_all_users()
+        for user in users:
+            allowed_users.append(user['id'])
+    
+    for uid in allowed_users:
+        if uid != user_id:
+           give_access_registry(user_id, new_registry.id, int(uid))
 
     return  {"id": new_registry.id}
 
@@ -25,21 +35,11 @@ def get_registries(user_id):
     registry_accesses = models.RegistryAccess.objects.filter(user_id = user_id)
     other_registries = []
     for ra in registry_accesses:
-        assigned = False
-        self_assigned = False
-
-        if (ra.user_id != None):
-             if (ra.user_id == user_id):
-                self_assigned = True
-             else:
-                self_assigned = False
                      
         reg_detail = get_registry(ra.registry_id.id)
     	r = {
     	   "id" : ra.registry_id.id,
            "details" : reg_detail,
-           "assigned" : assigned,
-           "self_assigned" : self_assigned,
     	   # "name" : ra.registry_id.name,
     	    "owner_id" : ra.registry_id.owner_id.id,
     	    "owner_name" : ra.registry_id.owner_id.username    	   
@@ -54,7 +54,7 @@ def get_registry(registry_id):
 
     registry = models.Registry.objects.get(id=registry_id)
     registry_items = models.RegistryItem.objects.filter(registry_id=registry_id)
-
+    print registry_items
     result = {}
     result['id'] = registry.id
     result['name'] = registry.name
@@ -63,14 +63,23 @@ def get_registry(registry_id):
     items = []
 
     for registry_item in registry_items:
+
         item = models.Item.objects.get(id=registry_item.item_id.id)
+
+        if (registry_item.assigned_to != None):
+            assigned_id = registry_item.assigned_to.id
+        else:
+            assigned_id = None
+
         items.append({
             "id": item.id, 
             "item_code": item.item_code,
             "item_name": item.item_name,
             "price": item.price,
             "category": item.category,
-            "colour": item.colour
+            "colour": item.colour,
+            "assigned_to": assigned_id,
+            "registry_item_id": registry_item.id
             })
 
     result['items'] = items
@@ -137,22 +146,20 @@ def assign_item(user_id, registry_item_id):
     registry_item.assigned_to = User.objects.get(id=user_id)
     registry_item.save()
 
-    return {"id": registry_item}
+    return {"status": "SUCCESS"}
 
-def unassignitem(user_id, registry_item_id):
+def unassign_item(user_id, registry_item_id):
 
     registry_item = models.RegistryItem.objects.get(id=registry_item_id)
     registry_item.assigned_to = None
     registry_item.save()
 
-    return {"id": registry_item}
+    return {"status": "SUCCESS"}
 
 
 def is_user_owner_of_registry(user_id, registry_id):
     registry = models.Registry.objects.get(id=registry_id)
  
-    print registry.owner_id.id
-    print user_id
     
     if int(registry.owner_id.id) == int(user_id):
         print "Fhgdhdg"
