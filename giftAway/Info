@@ -29,9 +29,10 @@ for x in registry_item.__dict__.keys():
 
 Remove item from registry
 
-Get users with access
-Give access 
-remove access
+#Get users with access
+
+#Give access 
+#remove access
 
 
 Add item frominventory

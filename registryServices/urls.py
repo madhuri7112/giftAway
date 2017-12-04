@@ -39,7 +39,8 @@ urlpatterns = [
 
     url(r'^assignitem', views.assign_item_api, name='add_item_registry_api'),
     url(r'^unassignitem', views.unassign_item_api, name='add_item_registry_api'),
-    url(r'^items', views.get_items, name='get_items')
+    url(r'^items', views.get_items, name='get_items'),
+    url(r'^forgotpassword', views.forgot_password, name='forgot_password'),
     # url(r'^getregistries', views.registry_list, name='registry_list'),    
     # url(r'^addregistry', views.add_registry, name='add_user'),
     # url(r'^admin/', admin.site.urls),

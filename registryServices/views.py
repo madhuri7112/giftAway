@@ -220,10 +220,13 @@ def get_items(request):
 
     return JsonResponse(result)
 
+@csrf_exempt 
+def forgot_password(request):
 
-def get_users_with_access_register(request):
-
-    registry_id = request.GET['registry_id']
-
+    parameters = json.loads(request.body)
+    email_id = parameters['email']
+    result = userManager.forgot_password(email_id)
     
+    return JsonResponse(result)
+
 

@@ -3,6 +3,8 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from constants import * 
+import smtplib
+import random, string
 # def add_user():
 #     new_user = models.User(name="name", email_id="email_id", password="password", role="role")
 #     new_user.save()
@@ -135,4 +137,40 @@ def register_user(username, email, password):
 
     return {KEY_STATUS: STATUS_SUCCESS, 'user_id': user.id}
 
+def forgot_password(email):
 
+    try: 
+        user = User.objects.filter(email=email)
+        new_password = randomword(5)
+        
+
+        change_password(user[0].id, new_password)
+
+        msg = 'Hi. Your new password is '+ new_password
+
+        server = smtplib.SMTP('smtp.gmail.com',587) #port 465 or 587
+        server.ehlo()
+        server.starttls()
+        server.ehlo()
+        server.login('giftaway.wpl@gmail.com','giftaway123')
+        server.sendmail('giftaway.wpl3@gmail.com',email,msg)
+        server.close()
+
+    except Exception as e: 
+
+        print e
+        result = { 
+           KEY_STATUS: STATUS_FAILED,
+           KEY_MESSAGE: SOMETHING_WENT_WRONG
+        }
+        return result
+
+    return {KEY_STATUS: STATUS_SUCCESS, 'user_id': user[0].id}
+
+def randomword(length):
+
+    return ''.join(random.choice(string.lowercase) for i in range(length))
+
+#def randomword(length):
+
+#    return ''.join(random.choice(string.lowercase) for i in range(length))

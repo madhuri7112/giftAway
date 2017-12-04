@@ -15,3 +15,5 @@ USERACCOUNT_EXISTS = "Account with given username already exists"
 KEY_STATUS = "status"
 KEY_MESSAGE = "message"
 KEY_CODE = "code"
+
+SOMETHING_WENT_WRONG = 'Something went wrong.'
