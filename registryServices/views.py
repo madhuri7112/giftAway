@@ -9,6 +9,7 @@ from .models import *
 from .Managers import userManager
 from .Managers import registryManager
 from .Managers import itemManager
+from .Managers import constants
 
 
 from django.http import HttpResponse, JsonResponse
@@ -37,6 +38,7 @@ def user_details_api(request):
 
 @csrf_exempt
 def createtoken_api(request):
+
 
     parameters = json.loads(request.body)
     #parameters = json.loads(request.body
@@ -216,6 +218,9 @@ def unassign_item_api(request):
 
 def get_items(request):
     
+    if not is_authenticated(request):
+        return JsonResponse(not_authenticated_message())
+
     result = itemManager.get_all_items()
 
     return JsonResponse(result)
@@ -229,4 +234,15 @@ def forgot_password(request):
     
     return JsonResponse(result)
 
+def is_authenticated(request):
 
+    if constants.KEY_HTTP_TOKEN not in request.META or request.META[constants.KEY_HTTP_TOKEN] != constants.SECRET_TOKEN:
+       return False
+
+    return True
+
+def not_authenticated_message():
+    return {
+       KEY_STATUS:STATUS_FAILED,
+       KEY_MESSAGE: AUTH_ERROR
+    }

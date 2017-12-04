@@ -20,3 +20,6 @@ SOMETHING_WENT_WRONG = 'Something went wrong.'
 NOT_AUTHORIZED = "You are not authorized for this operation"
 
 ADMIN_ID = 18
+
+KEY_HTTP_TOKEN = 'HTTP_AUTHORIZATION'
+SECRET_TOKEN = "secret_token"
