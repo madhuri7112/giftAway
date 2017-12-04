@@ -164,7 +164,7 @@ def get_registry_api(request):
 
 
 def registry_list_api(request):
-    print request
+    #print request
     user_id = request.GET['user_id']
     result = registryManager.get_registries(user_id)
 

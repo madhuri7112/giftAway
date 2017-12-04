@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from constants import * 
 import smtplib
 import random, string
+
 # def add_user():
 #     new_user = models.User(name="name", email_id="email_id", password="password", role="role")
 #     new_user.save()

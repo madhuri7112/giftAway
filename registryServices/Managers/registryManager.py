@@ -54,7 +54,7 @@ def get_registry(registry_id):
 
     registry = models.Registry.objects.get(id=registry_id)
     registry_items = models.RegistryItem.objects.filter(registry_id=registry_id)
-    print registry_items
+    #print registry_items
     result = {}
     result['id'] = registry.id
     result['name'] = registry.name
