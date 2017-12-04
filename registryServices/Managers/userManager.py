@@ -153,7 +153,7 @@ def forgot_password(email):
         server.starttls()
         server.ehlo()
         server.login('giftaway.wpl@gmail.com','giftaway123')
-        server.sendmail('giftaway.wpl3@gmail.com',email,msg)
+        server.sendmail('giftaway.wpl@gmail.com',email,msg)
         server.close()
 
     except Exception as e: 

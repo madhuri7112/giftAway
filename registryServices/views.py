@@ -18,6 +18,7 @@ from rest_framework.parsers import JSONParser
 import json
 from django.core.cache import cache
 
+
 def index(request):
     a = {"abc":"24"};
 
@@ -108,10 +109,9 @@ def add_item_inventory_api(request):
 def remove_item_inventory_api(request):
 
     parameters = json.loads(request.body)
-    user_id = parameters['user_id']
-    item_id = parameters['item_id']
+    
 
-    result = itemManager.remove_item(user_id, item_id)
+    result = itemManager.remove_item(parameters)
 
     return JsonResponse(result)
 
@@ -122,7 +122,7 @@ def add_item_registry_api(request):
     registry_id = parameters['registry_id']
     item_id = parameters['item_id']
     user_id = parameters['user_id']
-
+    
     result = registryManager.add_registry_item(user_id, registry_id, item_id)
 
     return JsonResponse(result)

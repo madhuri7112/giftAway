@@ -1,8 +1,10 @@
 from .. import models
-
+from constants import *
 
 def add_item(params):
  
+    if (params['user_id'] != ADMIN_ID) :
+        return {KEY_STATUS: STATUS_FAILED, KEY_MESSAGE: NOT_AUTHORIZED}
     item_code = params['item_code']
     item_name = params['item_name']
     price = params['price']
@@ -21,8 +23,11 @@ def add_item(params):
 
     return  {"id": new_item.id}
 
-def remove_item(user_id, item_id):
+def remove_item(params):
 
+    if (params['user_id'] != ADMIN_ID) :
+        return {KEY_STATUS: STATUS_FAILED, KEY_MESSAGE: NOT_AUTHORIZED}
+    item_id = params['item_id']
     models.Item.objects.get(id=item_id).delete()
 
     return {"status": "SUCCESS"}

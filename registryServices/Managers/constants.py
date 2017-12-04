@@ -17,3 +17,6 @@ KEY_MESSAGE = "message"
 KEY_CODE = "code"
 
 SOMETHING_WENT_WRONG = 'Something went wrong.'
+NOT_AUTHORIZED = "You are not authorized for this operation"
+
+ADMIN_ID = 18
