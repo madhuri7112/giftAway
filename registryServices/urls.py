@@ -18,7 +18,7 @@ from django.contrib import admin
 from . import views
 
 urlpatterns = [
-    #url(r'^gift/$', views.index, name='index'),
+    url(r'^index', views.index, name='index'),
     url(r'^getusers', views.user_list_api, name='user_list'),
     url(r'^getuser', views.user_details_api, name='user_list'),
     url(r'^registeruser', views.register_user_api, name='register_user'),

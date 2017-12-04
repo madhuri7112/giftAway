@@ -23,14 +23,21 @@ from django.core.cache import cache
 def index(request):
     a = {"abc":"24"};
 
-    return  JsonResponse({'foo':'bar'});
+    return  JsonResponse({'foo 1111':'bar'});
 
-def user_list_api(request):   
+def user_list_api(request): 
+    if not is_authenticated(request):
+        return JsonResponse(not_authenticated_message())
+
     users = userManager.get_all_users()
 
     return JsonResponse({"users": users});
    
-def user_details_api(request):    
+def user_details_api(request): 
+ 
+    if not is_authenticated(request):
+        return JsonResponse(not_authenticated_message())
+  
     user_id = request.GET['user_id']
     user_details = userManager.get_user(user_id)
    
@@ -39,6 +46,8 @@ def user_details_api(request):
 @csrf_exempt
 def createtoken_api(request):
 
+    if not is_authenticated(request):
+        return JsonResponse(not_authenticated_message())
 
     parameters = json.loads(request.body)
     #parameters = json.loads(request.body
@@ -51,7 +60,9 @@ def createtoken_api(request):
 @csrf_exempt
 def get_user_from_token_api(request):
 
-    
+    if not is_authenticated(request):
+        return JsonResponse(not_authenticated_message())
+
     token = request.GET['token']
     user_details = userManager.get_user_from_token(token)
      
@@ -60,6 +71,9 @@ def get_user_from_token_api(request):
 @csrf_exempt
 def delete_token_api(request):
     
+    if not is_authenticated(request):
+        return JsonResponse(not_authenticated_message())
+
     parameters = json.loads(request.body)
     token = parameters['token']
     user_id = userManager.delete_token(token)
@@ -68,6 +82,9 @@ def delete_token_api(request):
 
 @csrf_exempt
 def logout_api(request):
+
+     if not is_authenticated(request):
+        return JsonResponse(not_authenticated_message())
 
      parameters = json.loads(request.body)
      user_id = parameters['user_id']
@@ -78,6 +95,9 @@ def logout_api(request):
 @csrf_exempt
 def register_user_api(request):   
     #print parameters
+
+    if not is_authenticated(request):
+        return JsonResponse(not_authenticated_message())
 
     parameters = json.loads(request.body)
     username = parameters['username']
@@ -91,6 +111,9 @@ def register_user_api(request):
 @csrf_exempt
 def change_password_api(request):
 
+    if not is_authenticated(request):
+        return JsonResponse(not_authenticated_message())
+
     parameters = json.loads(request.body)
     password = parameters['password']
     user_id = parameters['user_id']
@@ -102,6 +125,9 @@ def change_password_api(request):
 @csrf_exempt
 def add_item_inventory_api(request):
 
+    if not is_authenticated(request):
+        return JsonResponse(not_authenticated_message())
+
     parameters = json.loads(request.body)
     result = itemManager.add_item(parameters)
 
@@ -109,6 +135,9 @@ def add_item_inventory_api(request):
 
 @csrf_exempt
 def remove_item_inventory_api(request):
+
+    if not is_authenticated(request):
+        return JsonResponse(not_authenticated_message())
 
     parameters = json.loads(request.body)
     
@@ -119,6 +148,9 @@ def remove_item_inventory_api(request):
 
 @csrf_exempt
 def add_item_registry_api(request):
+
+    if not is_authenticated(request):
+        return JsonResponse(not_authenticated_message())
 
     parameters = json.loads(request.body)
     registry_id = parameters['registry_id']
@@ -132,6 +164,9 @@ def add_item_registry_api(request):
 @csrf_exempt
 def remove_item_registry_api(request):
 
+    if not is_authenticated(request):
+        return JsonResponse(not_authenticated_message())
+
     parameters = json.loads(request.body)
     registry_id = parameters['registry_id']
     item_id = parameters['item_id']
@@ -143,6 +178,9 @@ def remove_item_registry_api(request):
 
 @csrf_exempt
 def create_registry_api(request):
+
+    if not is_authenticated(request):
+        return JsonResponse(not_authenticated_message())
 
     parameters = json.loads(request.body)
     user_id = parameters['user_id']
@@ -156,6 +194,9 @@ def create_registry_api(request):
 
 def get_registry_api(request):
 
+    if not is_authenticated(request):
+        return JsonResponse(not_authenticated_message())
+
     user_id = request.GET['user_id']
     registry_id = request.GET['registry_id']
     result = registryManager.get_registry(registry_id)
@@ -164,6 +205,9 @@ def get_registry_api(request):
 
 
 def registry_list_api(request):
+    if not is_authenticated(request):
+        return JsonResponse(not_authenticated_message())
+
     #print request
     user_id = request.GET['user_id']
     result = registryManager.get_registries(user_id)
@@ -172,6 +216,10 @@ def registry_list_api(request):
 
 @csrf_exempt
 def give_access_registry_api(request):
+
+    if not is_authenticated(request):
+        return JsonResponse(not_authenticated_message())
+
 
     parameters = json.loads(request.body)
     user_id = parameters['user_id']
@@ -185,6 +233,10 @@ def give_access_registry_api(request):
 @csrf_exempt
 def deny_access_registry_api(request):
 
+    if not is_authenticated(request):
+        return JsonResponse(not_authenticated_message())
+
+
     parameters = json.loads(request.body)
     user_id = parameters['user_id']
     deny_to_user_id = parameters['deny_to_user_id']
@@ -197,6 +249,10 @@ def deny_access_registry_api(request):
 @csrf_exempt
 def assign_item_api(request):
 
+    if not is_authenticated(request):
+        return JsonResponse(not_authenticated_message())
+
+
     parameters = json.loads(request.body)
     user_id = parameters['user_id']
     registry_item_id = parameters['registry_item_id']
@@ -208,6 +264,10 @@ def assign_item_api(request):
 @csrf_exempt
 def unassign_item_api(request):
 
+    if not is_authenticated(request):
+        return JsonResponse(not_authenticated_message())
+
+
     parameters = json.loads(request.body)
     user_id = parameters['user_id']
     registry_item_id = parameters['registry_item_id']
@@ -217,7 +277,7 @@ def unassign_item_api(request):
     return JsonResponse(result)
 
 def get_items(request):
-    
+   
     if not is_authenticated(request):
         return JsonResponse(not_authenticated_message())
 
@@ -227,6 +287,10 @@ def get_items(request):
 
 @csrf_exempt 
 def forgot_password(request):
+
+    if not is_authenticated(request):
+        return JsonResponse(not_authenticated_message())
+
 
     parameters = json.loads(request.body)
     email_id = parameters['email']
@@ -243,6 +307,6 @@ def is_authenticated(request):
 
 def not_authenticated_message():
     return {
-       KEY_STATUS:STATUS_FAILED,
-       KEY_MESSAGE: AUTH_ERROR
+       constants.KEY_STATUS:constants.STATUS_FAILED,
+       constants.KEY_MESSAGE: constants.AUTH_ERROR
     }
